@@ -20,6 +20,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.IntegerField()
     add_date = models.DateField(default=timezone.now)
+    photo = models.ImageField()
 
     def __str__(self):
         return (f'Name: {self.name}, description: {self.description}, '

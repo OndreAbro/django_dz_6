@@ -1,6 +1,8 @@
+from django.core.files.storage import FileSystemStorage
 from .models import Client, Order, Product
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
+from .forms import ProductImageForm
 
 
 def client_products(request, client_id):
@@ -22,3 +24,18 @@ def client_products(request, client_id):
                    'products_month': products_month,
                    'products_year': products_year,
                    })
+
+
+def product_image_form(request, product_id):
+    if request.method == 'POST':
+        form = ProductImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = get_object_or_404(Product, pk=product_id)
+            product_image = form.cleaned_data['product_image']
+            product.photo = product_image
+            product.save()
+            return render(request, 'dz_2_app/image_upload.html',
+            {'product': product, 'product_image': product.photo})
+    else:
+        form = ProductImageForm()
+        return render(request, 'dz_2_app/product_image_form.html', {'form': form})

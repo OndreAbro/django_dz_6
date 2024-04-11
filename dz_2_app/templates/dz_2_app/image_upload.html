@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Для товара {{ product.name }} загружено изображение:</h2>
-    {{ product_image }}
+    <img src="{{ product_image.photo.url}}" alt="connect" style="max-height:300px">
 {% endblock %}

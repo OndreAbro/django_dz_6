@@ -30,10 +30,11 @@ def product_image_form(request, product_id):
     if request.method == 'POST':
         form = ProductImageForm(request.POST, request.FILES)
         if form.is_valid():
-            product = get_object_or_404(Product, pk=product_id)
-            product_image = form.cleaned_data['product_image']
+            product = Product.objects.filter(pk=product_id).first()
+            product_image = form.cleaned_data['photo']
             product.photo = product_image
             product.save()
+            # img = form.instance
             return render(request, 'dz_2_app/image_upload.html',
             {'product': product, 'product_image': product.photo})
     else:

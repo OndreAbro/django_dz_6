@@ -22,8 +22,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['add_date', 'price']
     search_fields = ['description']
     actions = [reset_quantity]
-    fields = ['name', 'description', 'add_date', 'quantity', 'photo']
-    readonly_fields = ['add_date', 'quantity']
+    fields = ['name', 'description', 'add_date', 'quantity', 'photo', 'price']
+    readonly_fields = ['add_date']
 
 
 class OrderAdmin(admin.ModelAdmin):

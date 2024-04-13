@@ -3,6 +3,7 @@ from .models import Client, Order, Product
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 from .forms import ProductImageForm
+from django.db.models import Sum
 
 
 def client_products(request, client_id):
@@ -34,9 +35,26 @@ def product_image_form(request, product_id):
             product_image = form.cleaned_data['photo']
             product.photo = product_image
             product.save()
-            # img = form.instance
             return render(request, 'dz_2_app/image_upload.html',
             {'product': product, 'product_image': product.photo})
     else:
         form = ProductImageForm()
         return render(request, 'dz_2_app/product_image_form.html', {'form': form})
+
+
+def total_in_db(request):
+    total = Product.objects.aggregate(Sum('quantity'))
+    context = {'title': 'Общее количество посчитано в базе данных', 'total': total,}
+    return render(request, 'dz_2_app/total_count.html', context)
+
+
+def total_in_view(request):
+    products = Product.objects.all()
+    total = sum(product.quantity for product in products)
+    context = {'title': 'Общее количество посчитано в представлении', 'total': total,}
+    return render(request, 'dz_2_app/total_count.html', context)
+
+
+def total_in_template(request):
+    context = {'title': 'Общее количество посчитано в шаблоне', 'products': Product,}
+    return render(request, 'dz_2_app/total_count.html', context)

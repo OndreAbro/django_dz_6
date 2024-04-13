@@ -29,6 +29,10 @@ class Product(models.Model):
     def reduce_quantity(self):
         self.quantity -= 1
 
+    @property
+    def total_quantity(self):
+        return sum(product.quantity for product in Product.objects.all())
+
 
 class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
